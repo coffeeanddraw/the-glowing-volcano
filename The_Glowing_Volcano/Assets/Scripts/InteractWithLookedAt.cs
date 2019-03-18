@@ -9,12 +9,16 @@ using UnityEngine;
 
 public class InteractWithLookedAt : MonoBehaviour
 {
+    [SerializeField]
+    private DetectLookedAtInteractive detectLookedAtInteractive;
+
     // Update is called once per frame
     void Update() // check every frame 
     {
-        if (Input.GetButtonDown("Interact"))
+        if (Input.GetButtonDown("Interact") && detectLookedAtInteractive.lookedAtInteractive != null)
         {
             Debug.Log("Player pressed the interact button");
+            detectLookedAtInteractive.lookedAtInteractive.InteractWith();
         }
     }
 }
