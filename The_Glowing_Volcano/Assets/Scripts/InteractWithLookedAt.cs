@@ -15,10 +15,10 @@ public class InteractWithLookedAt : MonoBehaviour
     // Update is called once per frame
     void Update() // check every frame 
     {
-        if (Input.GetButtonDown("Interact") && detectLookedAtInteractive.lookedAtInteractive != null)
+        if (Input.GetButtonDown("Interact") && detectLookedAtInteractive.LookedAtInteractive != null)
         {
             Debug.Log("Player pressed the interact button");
-            detectLookedAtInteractive.lookedAtInteractive.InteractWith();
+            detectLookedAtInteractive.LookedAtInteractive.InteractWith();
         }
     }
 }

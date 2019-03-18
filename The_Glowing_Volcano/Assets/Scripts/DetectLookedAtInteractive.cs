@@ -19,7 +19,7 @@ public class DetectLookedAtInteractive : MonoBehaviour
     public IInteractive LookedAtInteractive
     {
         get { return lookedAtInteractive; }
-        set { lookedAtInteractive = value; }
+        private set { lookedAtInteractive = value; }
     }
 
     private IInteractive lookedAtInteractive;
