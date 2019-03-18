@@ -12,6 +12,9 @@ public class InteractWithLookedAt : MonoBehaviour
     // Update is called once per frame
     void Update() // check every frame 
     {
-        
+        if (Input.GetButtonDown("Interact"))
+        {
+            Debug.Log("Player pressed the interact button");
+        }
     }
 }
