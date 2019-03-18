@@ -4,8 +4,13 @@ using UnityEngine;
 
 public class InteractiveObject : MonoBehaviour, IInteractive
 {
+    [SerializeField]
+    private string displayText = nameof(InteractiveObject);
+    public string DisplayText => displayText;
+
     public void InteractWith()
     {
-        Debug.Log("Player just interacted with " + gameObject.name);
+        Debug.Log($"Player just interacted with {gameObject.name}.");
     }
 }
+ 
