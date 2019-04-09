@@ -8,6 +8,8 @@ public class InventoryObject : InteractiveObject
     [SerializeField]
     private string objectName = nameof(InventoryObject);
 
+    public string ObjectName => objectName;
+
     private new Renderer renderer;
     private new Collider collider;
     private Light lighting;
