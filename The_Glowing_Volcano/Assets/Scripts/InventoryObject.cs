@@ -57,5 +57,6 @@ public class InventoryObject : InteractiveObject
             if (child != null)
             child.SetActive(false);
         }
+        Debug.Log($"Inventory menu game object name {InventoryMenu.Instance.name}");
     }
 }
