@@ -9,13 +9,32 @@ public class InventoryObject : InteractiveObject
     private string objectName = nameof(InventoryObject);
 
     [Tooltip("Inventory item description")]
-    [TextArea(3,8)]
+    [TextArea(3, 8)]
     [SerializeField]
     private string description;
 
     [Tooltip("Display icon for inventory item")]
     [SerializeField]
     private Sprite icon;
+
+    [Tooltip("Use as transport object")]
+    [SerializeField]
+    private bool transportItem;
+
+    [SerializeField]
+    private GameObject objectToTransport;
+
+    [Tooltip("Transport location x")]
+    [SerializeField]
+    private int x;
+
+    [Tooltip("Transport location x")]
+    [SerializeField]
+    private int y;
+
+    [Tooltip("Transport location x")]
+    [SerializeField]
+    private int z;
 
     public Sprite Icon => icon;
     public string ObjectName => objectName;
@@ -25,13 +44,15 @@ public class InventoryObject : InteractiveObject
     private new Collider collider;
     private Light lighting;
     private int childCount;
+    private Transform passengerTransform;
 
-    private void Start()
+    protected virtual void Start()
     {
         renderer = GetComponent<Renderer>();
         collider = GetComponent<Collider>();
         lighting = GetComponent<Light>();
         childCount = transform.childCount;
+        passengerTransform = objectToTransport.GetComponent<Transform>();
     }
 
     public InventoryObject()
@@ -69,6 +90,13 @@ public class InventoryObject : InteractiveObject
             if (child != null)
             child.SetActive(false);
         }
+
+        if (transportItem)
+        {
+            base.InteractWith();
+            passengerTransform.position = new Vector3(x, y, z);
+        }
+
         Debug.Log($"Inventory menu game object name {InventoryMenu.Instance.name}");
     }
 }
