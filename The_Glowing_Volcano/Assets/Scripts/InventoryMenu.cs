@@ -1,10 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityStandardAssets.Characters.FirstPerson;
 
 public class InventoryMenu : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject inventoryMenuItemTogglePrefab;
+
+    [Tooltip("Content of the scrollview for the list of inventory items")]
+    [SerializeField]
+    private Transform inventoryListContentArea;
+
+    [Tooltip("Place in the UI for displaying the name of the selected inventory item")]
+    [SerializeField]
+    private Text itemLabelText;
+
+    [Tooltip("Place in the UI for displaying the description of the selected inventory item")]
+    [SerializeField]
+    private Text descriptionText;
+
     private static InventoryMenu instance;
     private CanvasGroup canvasGroup;
     private RigidbodyFirstPersonController rigidbodyFirstPersonController;
@@ -28,6 +44,17 @@ public class InventoryMenu : MonoBehaviour
         HideMenu();
     }
 
+    /// <summary>
+    /// Instantiates a new InventoryMenuItemToggle prefab and adds it to the menu.
+    /// </summary>
+    /// <param name="inventoryObjectToAdd"></param>
+    public void AddItemToMenu(InventoryObject inventoryObjectToAdd)
+    {
+        GameObject clone = Instantiate(inventoryMenuItemTogglePrefab, inventoryListContentArea);
+        InventoryMenuItemToggle toggle = clone.GetComponent<InventoryMenuItemToggle>();
+        toggle.AssociatedInventoryObject = inventoryObjectToAdd;
+    }
+
     private void ShowMenu()
     {
         canvasGroup.alpha = 1;
@@ -46,6 +73,28 @@ public class InventoryMenu : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         rigidbodyFirstPersonController.enabled = true;
         audioSource.Play();
+    }
+
+    /// <summary>
+    /// Event handler for InventoryMenuItemSelected
+    /// </summary>
+    /// <param name="selectedInventoryObject"></param>
+
+    private void OnInventoryMenuItemSelected(InventoryObject selectedInventoryObject)
+    {
+        itemLabelText.text = selectedInventoryObject.ObjectName;
+        descriptionText.text = selectedInventoryObject.Description;
+    }
+
+    private void OnEnable()
+    {
+        InventoryMenuItemToggle.InventoryMenuItemSelected += OnInventoryMenuItemSelected;
+    }
+
+    private void OnDisable()
+    {
+        InventoryMenuItemToggle.InventoryMenuItemSelected -= OnInventoryMenuItemSelected;
+
     }
 
     private void Update()

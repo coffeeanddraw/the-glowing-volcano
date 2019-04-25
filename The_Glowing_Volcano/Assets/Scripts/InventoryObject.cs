@@ -17,7 +17,9 @@ public class InventoryObject : InteractiveObject
     [SerializeField]
     private Sprite icon;
 
+    public Sprite Icon => icon;
     public string ObjectName => objectName;
+    public string Description => description;
 
     private new Renderer renderer;
     private new Collider collider;
@@ -45,11 +47,21 @@ public class InventoryObject : InteractiveObject
     public override void InteractWith()
     {
         base.InteractWith(); // Play sound effect 
-        PlayerInventory.InventoryObjects.Add(this);
 
-        renderer.enabled = false;
+        PlayerInventory.InventoryObjects.Add(this);
+        InventoryMenu.Instance.AddItemToMenu(this);
+
+        //renderer.enabled = false;
         collider.enabled = false;
-        lighting.enabled = false;
+        //lighting.enabled = false;
+        if (renderer)
+        {
+            renderer.enabled = false;
+        }
+        if (lighting)
+        {
+            lighting.enabled = false;
+        }
 
         for (int i = 0; i < childCount; i++)
         {
