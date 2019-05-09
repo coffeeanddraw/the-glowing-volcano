@@ -17,6 +17,18 @@ public class InventoryObject : InteractiveObject
     [SerializeField]
     private Sprite icon;
 
+    [Tooltip("Use as toggle object")]
+    [SerializeField]
+    private bool toggleItem;
+
+    [Tooltip("The GameObject to toggle")]
+    [SerializeField]
+    private GameObject objectToToggle;
+
+    [Tooltip("Can the player interact with this more than once?")]
+    [SerializeField]
+    private bool isReusable = false;
+
     [Tooltip("Use as transport object")]
     [SerializeField]
     private bool transportItem;
@@ -26,15 +38,15 @@ public class InventoryObject : InteractiveObject
 
     [Tooltip("Transport location x")]
     [SerializeField]
-    private int x;
+    private int xT;
+
+    [Tooltip("Transport location t")]
+    [SerializeField]
+    private int yT;
 
     [Tooltip("Transport location x")]
     [SerializeField]
-    private int y;
-
-    [Tooltip("Transport location x")]
-    [SerializeField]
-    private int z;
+    private int zT;
 
     public Sprite Icon => icon;
     public string ObjectName => objectName;
@@ -45,6 +57,7 @@ public class InventoryObject : InteractiveObject
     private Light lighting;
     private int childCount;
     private Transform passengerTransform;
+    private bool hasBeenUsed = false;
 
     protected virtual void Start()
     {
@@ -52,7 +65,11 @@ public class InventoryObject : InteractiveObject
         collider = GetComponent<Collider>();
         lighting = GetComponent<Light>();
         childCount = transform.childCount;
-        passengerTransform = objectToTransport.GetComponent<Transform>();
+
+        if (transportItem)
+        {
+            passengerTransform = objectToTransport.GetComponent<Transform>();
+        }  
     }
 
     public InventoryObject()
@@ -91,10 +108,22 @@ public class InventoryObject : InteractiveObject
             child.SetActive(false);
         }
 
+        if (toggleItem)
+        {
+            if (isReusable || !hasBeenUsed)
+            {
+                base.InteractWith();
+                objectToToggle.SetActive(!objectToToggle.activeSelf);
+                hasBeenUsed = true;
+            }
+            else
+                base.InteractWith();
+        }
+
         if (transportItem)
         {
             base.InteractWith();
-            passengerTransform.position = new Vector3(x, y, z);
+            passengerTransform.position = new Vector3(xT, yT, zT);
         }
 
         Debug.Log($"Inventory menu game object name {InventoryMenu.Instance.name}");
